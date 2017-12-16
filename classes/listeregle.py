@@ -7,6 +7,9 @@ class ListeRegle:
         regles = []
         self.regles = regles
 
+    def get(self):
+        return self.regles
+
     @property
     def regles(self):
         return self._regles
@@ -40,6 +43,7 @@ class ListeRegle:
         mon_fichier = fichier.readlines()   #On lit les lignes du fichier une a une
         for ligne in mon_fichier:           #on affecte, une par une, chaque valeur du fichier à ligne
             t = ligne.replace("\n", "").split(";")  #on créer une liste T qui prend chaque caractéristique de la regle
+
             self.regles.append(Regle(t[0], t[1], t[2], t[3], t[4], t[5], (t[6].split(","))))
             #on ajoute chaque regle à regles construisant une "liste de regles"
             fichier.close()
@@ -53,10 +57,10 @@ class ListeRegle:
 #(self, nom_regle, amorce, apartirde, prefixe, nom_fichier(none ou quelque chose), postfixe, extension(none ou liste):
 
 # O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",None)
-B = Regle("Regle_numero_2","Chiffre","1","bete","DEBEBOM","izi",".txt,.pdf")
-R = ListeRegle()
-R.sauvegarder(B)
-R.charger()
-print(R)
+# B = Regle("Regle_numero_2","Chiffre","1","bete","DEBEBOM","izi",".txt,.pdf")
+# R = ListeRegle()
+# R.sauvegarder(B)
+# R.charger()
+# print(R)
 
 

@@ -136,9 +136,11 @@ class Regle:
         :return:
         """
         if self.nom_fichier is None:
-            self.nom_fichier = "Non"
+            self.nom_fichier = "Aucune"
+        if self.amorce is None:
+            self.nom_fichier = "Aucune"
         if self.extension is None:
-            self.extension = "Non"
+            self.extension = "Aucune"
 
         return self.nom_regle + " " + self.amorce + " " + self.apartirde + " " \
             + self.prefixe + " " + self.nom_fichier + " " + self.postfixe \
