@@ -58,15 +58,16 @@
 
 from tkinter import *
 
+
+def faireApparaitreLeToplevel():
+    top = Toplevel(root)
+    top.title("coucou")
+
+    lab = Label(top, text="Ce soir je vais manger des frites")
+    lab.pack()
+
+
 root = Tk()
-
-def zut():
-    t=Toplevel()
-    t.grab_set()
-    a=Button(t,text='A la niche!',command=t.destroy)
-    a.pack()
-
-b = Button(root, text='Zou', command=zut)
-b.pack()
-
+go = Button(root, text="lancer", command=faireApparaitreLeToplevel)
+go.pack()
 root.mainloop()
