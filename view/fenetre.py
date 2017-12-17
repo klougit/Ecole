@@ -104,9 +104,75 @@ class MyWindow(Tk):
         Button(win_creer, text="Créer", command=self.creer_nouvelle_regle).grid(row=6, column=4)
 
     def regle_choisie(self):
-        print(self.nomR.get()+";"+self.amorce.get()+";"+self.apart.get()+";"+self.prefixe.get()+";"+self.nomFichier.get()+";"+self.postfixe.get()+";"+self.extens.get())
-        # return self.nomR.get()+";"+self.amorce.get()+";"+self.apart.get()+";"+self.prefixe.get()+";"+self.nomFichier.get()+";"+self.postfixe.get()+";"+self.extens.get()
-        #todo faire un fichier de sauvegarde pour la regle choisie, dans le main_fenetre faire un if(regle_choisie non vide alors on charge, sinon
+        win_regle_choisie = Toplevel(self)
+        win_regle_choisie.geometry(
+            "%dx%d%+d%+d" % (1050, 450, (self.winfo_screenwidth() - 1050) // 2,
+                             (self.winfo_screenheight() - 450) // 2))
+        # print(self.nomR.get()+";"+self.amorce.get()+";"+self.apart.get()+";"+self.prefixe.get()+";"+self.nomFichier.get()+";"+self.postfixe.get()+";"+self.extens.get())
+
+        win_regle_choisie.title("Renommage de fichier")
+        # Label
+        Label(win_regle_choisie, text="Renommer en lot").grid(row=0, column=2)
+        Label(win_regle_choisie, text="Nom de répertoire").grid(row=1, column=1)
+        Label(win_regle_choisie, text="Amorce").grid(row=3, column=0, pady=10)
+        Label(win_regle_choisie, text="Prefixe").grid(row=3, column=1)
+        Label(win_regle_choisie, text="Nom du fichier").grid(row=3, column=2)
+        Label(win_regle_choisie, text="Postfixe").grid(row=3, column=3)
+        Label(win_regle_choisie, text="Extension concernée").grid(row=3, column=4)
+        Label(win_regle_choisie, text="A partir de : ").grid(row=5, column=0, pady=10)
+
+        # Picture
+        picture = PhotoImage(file="./data/Rename.gif")
+        label1 = Label(win_regle_choisie, image=picture)
+        label1.image = picture
+        label1.grid(row=1, column=5)
+
+        # Entry
+        self.nom_dossier = StringVar()
+        Entry(win_regle_choisie, textvariable=self.nom_dossier).grid(row=1, column=2)
+
+        amorce = Entry(win_regle_choisie)
+        amorce.grid(row=4, column=0, padx=15)
+        amorce.insert(0,self.amorce.get())
+
+        prefixe = Entry(win_regle_choisie)
+        prefixe.grid(row=4, column=1, padx=15)
+        prefixe.insert(0, self.prefixe.get())
+
+        nom_fich = Entry(win_regle_choisie)
+        nom_fich.grid(row=4, column=2, padx=15)
+        nom_fich.insert(0, self.nomFichier.get())
+
+        apartirde = Entry(win_regle_choisie)
+        apartirde.grid(row=6, column=0, padx=15)
+        apartirde.insert(0, self.apart.get())
+
+        postfixe = Entry(win_regle_choisie)
+        postfixe.grid(row=4, column=3, padx=15)
+        postfixe.insert(0, self.postfixe.get())
+
+        extension = Entry(win_regle_choisie)
+        extension.grid(row=4, column=4, padx=15)
+        extension.insert(0, self.extens.get())
+
+        ### Button ###
+        Button(win_regle_choisie, text="Renommer", command=self.renommer_fichers_regle_choisie).grid(row=6, column=4)
+
+    def renommer_fichers_regle_choisie(self):
+        # todo recuperer info pour creer regle + lancer t = Renommage(regle) + t.renommer()
+        nomrep = self.nom_dossier.get()
+        amorce = self.amorce.get()
+        a_partir_de = self.apart.get()
+        prefixe = self.prefixe.get()
+        nom_fichier = self.nomFichier.get()
+        postfixe = self.postfixe.get()
+        extension = self.extens.get()
+        ma_regle2 = Regle(self.nomR.get(), amorce, a_partir_de, prefixe, nom_fichier, postfixe, extension)
+        print(ma_regle2)
+        # toto = Action(ma_regle2, nomrep)
+        # toto.simulate()
+        toto = Renommage(ma_regle2, nomrep)
+        toto.renommer(toto)
 
     def launch(self):
         win_liste_select = Toplevel(self)
@@ -140,7 +206,7 @@ class MyWindow(Tk):
         ## Entry ###
         self.nomR = Entry(win_liste_select)
         self.nomR.grid(row=1, column=2)
-        self.nomR.insert(0,nom_regle)
+        self.nomR.insert(0, nom_regle)
 
         self.amorce = Entry(win_liste_select)
         self.amorce.grid(row=4, column=0)
@@ -193,10 +259,8 @@ class MyWindow(Tk):
 
 # todo faire regex - tests - gestion nom_rep - gestion extension (popup exemple) - nom rep invalide - charger une regle
 
-
     def renommer_fichers(self):
         # todo recuperer info pour creer regle + lancer t = Renommage(regle) + t.renommer()
-        # nomrep = self.nomrep.get()
         nomrep = self.file_path
         amorce = self.amorce_select.get()
         a_partir_de = self.apartirde.get()
@@ -209,8 +273,6 @@ class MyWindow(Tk):
         # toto.simulate()
         toto = Renommage(ma_regle, nomrep)
         toto.renommer(toto)
-
-
 
     def main_window(self):
         self.title("Renommage de fichier")
@@ -231,9 +293,6 @@ class MyWindow(Tk):
         label1.grid(row=1, column=5)
 
         # Entry
-        # self.nomrep = StringVar()
-        # Entry(self, textvariable=self.nomrep).grid(row=1, column=2)
-
         self.prefix = StringVar()
         Entry(self, textvariable=self.prefix).grid(row=4, column=1, padx=15)
 
@@ -260,74 +319,8 @@ class MyWindow(Tk):
         Button(self, text="Browse", command= self.browse).grid(row=1, column=2)
         Button(self, text="Renommer", command=self.renommer_fichers).grid(row=6, column=4)
 
-
-
     def browse(self):
         self.file_path = filedialog.askdirectory()
-
-    # def create(self):
-    #     ### Label ###
-    #     # title_lab = Label(self, text="Renommer en lot").grid(row=0, column=2)
-    #     Label(self, text="Nom de règle").grid(row=1, column=1)
-    #     Label(self, text="Amorce").grid(row=3, column=0, pady=10)
-    #     Label(self, text="Prefixe").grid(row=3, column=1)
-    #     Label(self, text="Nom du fichier").grid(row=3, column=2)
-    #     Label(self, text="Postfixe").grid(row=3, column=3)
-    #     Label(self, text="Extension concernée").grid(row=3, column=4)
-    #     Label(self, text="A partir de : ").grid(row=5, column=0, pady=10)
-    #
-    #     ## Picture ####
-    #     # picture = PhotoImage(file="./data/New-Rule.gif")
-    #     # label1 = Label(self.frame, image=picture)
-    #     # label1.image = picture
-    #     # label1.grid(row=1, column=5)
-    #
-    #     ### Entry ###
-    #     self.nomregle = StringVar()
-    #     Entry(self, textvariable=self.nomregle).grid(row=1, column=2)
-    #
-    #     self.prefix = StringVar()
-    #     Entry(self, textvariable=self.prefix).grid(row=4, column=1, padx=15)
-    #
-    #     self.apartirde = StringVar()
-    #     Entry(self, textvariable=self.apartirde).grid(row=6, column=0, padx=15)
-    #
-    #     self.postfix = StringVar()
-    #     Entry(self, textvariable=self.postfix).grid(row=4, column=3, padx=15)
-    #
-    #     self.nom_fich = StringVar()
-    #     Entry(self, textvariable=self.nom_fich).grid(row=4, column=2, padx=15)
-    #
-    #     self.ext = StringVar()
-    #     Entry(self, textvariable=self.ext).grid(row=4, column=4, padx=15)
-    #
-    #     ### Combobox ###
-    #     self.amorce_select = StringVar()
-    #     amorce_choice = ('Aucune', 'Lettres', 'Chiffres')
-    #     Combobox(self, textvariable=self.amorce_select,
-    #              values=amorce_choice, state='readonly').grid(row=4, column=0, padx=15)
-    #     self.amorce_select.set(amorce_choice[0])
-    #
-    #     ### Button ###
-    #     Button(self, text="Créer", command=self.creer_nouvelle_regle).grid(row=6, column=4) # , command=)
-
-
-    @staticmethod
-    def clear_screen(frame):
-        for widget in frame.winfo_children():
-            widget.grid_forget()
-            widget.destroy()
-
-
-
-    def list_window(self):
-        # messagebox.showinfo("Liste des règles", "lister")
-        fen = MyWindow("Liste des règles")
-        lab = Label(fen, text="test")
-        lab.pack()
-
-
-
 
 
 fen = MyWindow()

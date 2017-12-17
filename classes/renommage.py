@@ -8,7 +8,8 @@ class Renommage(Action):        #Classe renommage hérite d'Action
     def __init__(self, regle, nom_rep):
         Action.__init__(self, regle, nom_rep)    #On récupère les attributs de la classe mere
 
-    def retourne_liste(self, liste):
+    @staticmethod
+    def retourne_liste(liste):
         liste_propre = ""
         for element in liste:
             liste_propre = liste_propre + element + "\n"
@@ -24,7 +25,7 @@ class Renommage(Action):        #Classe renommage hérite d'Action
         modif = t[0]
         orig = t[1]             #Affectation de chaque valeur du tuple à une variable
         # check = input("Voulez vous proceder a ces renommages ? (Entree pour OUI, n'importe quelle touche pour NON): ")
-        result = messagebox.askokcancel("Etes-vous sûr?", "Après renommage:\n"+self.retourne_liste(modif), icon='warning')
+        result = messagebox.askokcancel("Etes-vous sûr?", "Après renommage:\n", icon='warning')
         if result is True:
             for element in os.listdir(self.nom_du_rep):     #on parcours le repertoire "nom_du_rep"
                 for i in range(0, len(orig)):               #pour chaqe fichier on parcours la liste "orig"
