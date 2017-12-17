@@ -7,7 +7,7 @@ from action import *
 
 
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 from tkinter.ttk import Combobox
 
 
@@ -196,7 +196,8 @@ class MyWindow(Tk):
 
     def renommer_fichers(self):
         # todo recuperer info pour creer regle + lancer t = Renommage(regle) + t.renommer()
-        nomrep = self.nomrep.get()
+        # nomrep = self.nomrep.get()
+        nomrep = self.file_path
         amorce = self.amorce_select.get()
         a_partir_de = self.apartirde.get()
         prefixe = self.prefix.get()
@@ -230,8 +231,8 @@ class MyWindow(Tk):
         label1.grid(row=1, column=5)
 
         # Entry
-        self.nomrep = StringVar()
-        Entry(self, textvariable=self.nomrep).grid(row=1, column=2)
+        # self.nomrep = StringVar()
+        # Entry(self, textvariable=self.nomrep).grid(row=1, column=2)
 
         self.prefix = StringVar()
         Entry(self, textvariable=self.prefix).grid(row=4, column=1, padx=15)
@@ -256,9 +257,13 @@ class MyWindow(Tk):
         self.amorce_select.set(amorce_choice[0])
 
         ### Button ###
+        Button(self, text="Browse", command= self.browse).grid(row=1, column=2)
         Button(self, text="Renommer", command=self.renommer_fichers).grid(row=6, column=4)
 
 
+
+    def browse(self):
+        self.file_path = filedialog.askdirectory()
 
     # def create(self):
     #     ### Label ###
