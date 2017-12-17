@@ -3,18 +3,14 @@ sys.path.append('.\\classes')
 from regle import *
 from listeregle import *
 from renommage import *
-from action import *
-
-
 from tkinter import *
 from tkinter import messagebox, filedialog
 from tkinter.ttk import Combobox
 
 
-
-class MyWindow(Tk):
+class Ma_fenetre(Tk):
     def __init__(self):
-        super(MyWindow, self).__init__()
+        super(Ma_fenetre, self).__init__()
         self.geom_fen(1050, 450)
         self.resizable(width=False, height=False)
         self.menu()
@@ -22,6 +18,12 @@ class MyWindow(Tk):
         self.mainloop()
 
     def geom_fen(self, larg, haut):
+        """
+            Permet de dimensionner la fenetre en fonction de la résolution, et de la centrer
+        :param larg: Largeur de la fenetre générée
+        :param haut: Hauteur de la fenetre générée
+        :return:
+        """
         if self.winfo_screenwidth() < 1920:
             larg *= 0.8
             haut *= 0.8
@@ -30,12 +32,15 @@ class MyWindow(Tk):
                              (self.winfo_screenheight() - haut) // 2))
 
     def menu(self):
+        """
+            Menu de la fenetre, contenant Regle>Lister>Creer et ?>A propos
+        """
         main_menu = Menu(self)
-        roll_menu = Menu(main_menu, tearoff=0)                              # Menu déroulant
+        roll_menu = Menu(main_menu, tearoff=0)                               # Menu déroulant
         roll_menu.add_command(label="Lister", command=self.window_liste)     # Option lister, renvoie sur une fenêtre listant les règles
-        roll_menu.add_command(label="Créer", command=self.window_creer)#, command=self.create_window)    # Option créer, renvoie sur une fenêtre de creation
+        roll_menu.add_command(label="Créer", command=self.window_creer)       # Option créer, renvoie sur une fenêtre de creation
 
-        help_menu = Menu(main_menu, tearoff=0)  # Menu Fils
+        help_menu = Menu(main_menu, tearoff=0)
         help_menu.add_command(label="À propos", command=self.help)
 
         main_menu.add_cascade(label="Règles", menu=roll_menu)
@@ -44,6 +49,9 @@ class MyWindow(Tk):
         self.config(menu=main_menu)
 
     def creer_nouvelle_regle(self):
+        """
+            Methode créant une nouvelle regle via methode sauvegarder de ListeRegle en recuperant les données des champs de texte
+        """
         nomrep = self.nomregle.get()
         amorce = self.amorce_select.get()
         apartirde = self.apartirde.get()
@@ -51,9 +59,6 @@ class MyWindow(Tk):
         nomfich = self.nom_fich.get()
         postfixe = self.postfix.get()
         ext = self.ext.get()
-        # if amorce == "Aucune":
-        #     amorce = None
-        # print(str(nomrep)+" "+str(amorce)+" "+str(apartirde)+" "+str(prefixe)+" "+str(nomfich)+" "+str(postfixe)+" "+str(ext))
         ma_regle = Regle(nomrep, amorce, apartirde, prefixe, nomfich, postfixe, ext)
         ma_liste = ListeRegle()
         ma_liste.sauvegarder(ma_regle)
@@ -108,8 +113,6 @@ class MyWindow(Tk):
         win_regle_choisie.geometry(
             "%dx%d%+d%+d" % (1050, 450, (self.winfo_screenwidth() - 1050) // 2,
                              (self.winfo_screenheight() - 450) // 2))
-        # print(self.nomR.get()+";"+self.amorce.get()+";"+self.apart.get()+";"+self.prefixe.get()+";"+self.nomFichier.get()+";"+self.postfixe.get()+";"+self.extens.get())
-
         win_regle_choisie.title("Renommage de fichier")
         # Label
         Label(win_regle_choisie, text="Renommer en lot").grid(row=0, column=2)
@@ -168,9 +171,6 @@ class MyWindow(Tk):
         postfixe = self.postfixe.get()
         extension = self.extens.get()
         ma_regle2 = Regle(self.nomR.get(), amorce, a_partir_de, prefixe, nom_fichier, postfixe, extension)
-        print(ma_regle2)
-        # toto = Action(ma_regle2, nomrep)
-        # toto.simulate()
         toto = Renommage(ma_regle2, nomrep)
         toto.renommer(toto)
 
@@ -179,14 +179,14 @@ class MyWindow(Tk):
         win_liste_select.geometry(
             "%dx%d%+d%+d" % (1050, 450, (self.winfo_screenwidth() - 1050) // 2,
                              (self.winfo_screenheight() - 450) // 2))
-        toto = self.amorce_select.get()
-        nom_regle = toto.split(" ")[0]
-        amorce = toto.split(" ")[1]
-        apartirde = toto.split(" ")[2]
-        prefixe = toto.split(" ")[3]
-        nom_fichier = toto.split(" ")[4]
-        postfixe = toto.split(" ")[5]
-        ext = (toto.split(" ")[6] + toto.split(" ")[7])[1:-1].replace("'", "")
+        am = self.amorce_select.get()
+        nom_regle = am.split(" ")[0]
+        amorce = am.split(" ")[1]
+        apartirde = am.split(" ")[2]
+        prefixe = am.split(" ")[3]
+        nom_fichier = am.split(" ")[4]
+        postfixe = am.split(" ")[5]
+        ext = am.split(" ")[6]
 
         ### Label ###
         Label(win_liste_select, text="Nom de règle").grid(row=1, column=1)
@@ -241,8 +241,8 @@ class MyWindow(Tk):
         win_liste.title("Liste des règles")
         liste_regle = ListeRegle()
         liste_regle.charger()
-        toto = liste_regle.get()
-        # print(str(toto[0]).split(" ")[0]) #sort le nom de regle
+        toto = liste_regle.get_regle()
+        print(str(toto).split(" ")[0]) #sort le nom de regle
 
         ### Combobox ###
         self.amorce_select = StringVar()
@@ -257,10 +257,7 @@ class MyWindow(Tk):
     def help(): #help
         messagebox.showinfo("À propos", "Créé par Quentin Nicolas\nVersion 1.0")
 
-# todo faire regex - tests - gestion nom_rep - gestion extension (popup exemple) - nom rep invalide - charger une regle
-
     def renommer_fichers(self):
-        # todo recuperer info pour creer regle + lancer t = Renommage(regle) + t.renommer()
         nomrep = self.file_path
         amorce = self.amorce_select.get()
         a_partir_de = self.apartirde.get()
@@ -269,8 +266,6 @@ class MyWindow(Tk):
         postfixe = self.postfix.get()
         extension = self.ext.get()
         ma_regle = Regle(" ", amorce, a_partir_de, prefixe, nom_fichier, postfixe, extension)
-        # toto = Action(ma_regle, nomrep)
-        # toto.simulate()
         toto = Renommage(ma_regle, nomrep)
         toto.renommer(toto)
 
@@ -323,7 +318,7 @@ class MyWindow(Tk):
         self.file_path = filedialog.askdirectory()
 
 
-fen = MyWindow()
+fen = Ma_fenetre()
 
 # if __name__ == '__main__':
 #     app = MyWindow("Renommage fichier")

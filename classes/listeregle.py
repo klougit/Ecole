@@ -7,28 +7,13 @@ class ListeRegle:
         regles = []
         self.regles = regles
 
-    def get(self):
+    def get_regle(self):
         return self.regles
 
-    @property
-    def regles(self):
-        return self._regles
-
-    @regles.setter
-    def regles(self, value):
-        """
-        setter of regles
-        :param value:
-        :return:
-        """
-        self._regles = value
+    def set_regles(self, valeur):
+        self.regles = valeur
 
     def sauvegarder(self, regle):
-        """
-        Permet de sauvegarder les regles dans un fichier txt regles.ini
-        :param regle:
-        :return:
-        """
         fichier = open("./files/regles.ini", "a")
         saved = str(regle).replace(" ", ";")
         print(saved, file=fichier)
@@ -43,9 +28,7 @@ class ListeRegle:
         mon_fichier = fichier.readlines()   #On lit les lignes du fichier une a une
         for ligne in mon_fichier:           #on affecte, une par une, chaque valeur du fichier à ligne
             t = ligne.replace("\n", "").split(";")  #on créer une liste T qui prend chaque caractéristique de la regle
-
-            self.regles.append(Regle(t[0], t[1], t[2], t[3], t[4], t[5], (t[6].split(","))))
-            #on ajoute chaque regle à regles construisant une "liste de regles"
+            self.regles.append(Regle(t[0], t[1], t[2], t[3], t[4], t[5], t[6]))
             fichier.close()
 
     def __str__(self):

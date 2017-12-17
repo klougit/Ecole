@@ -2,129 +2,90 @@ from regle import *
 import re
 import os
 
+
 class Action:
 
-    # def __init__(self, regle, nom_du_rep = "C:/Users/Klou/Dropbox/École/Cours/Python/PyCharm Project/trainingExam/todo"):
-    # def __init__(self, regle, nom_du_rep = "./todo"):
-    def __init__(self, regle, nom_du_rep):
+    def __init__(self, regle, nom_rep):
         """
-        Constructeur d'un objet Action
-        :param regle: attends un objet Regle en entrée
-        :param nom_du_rep: attends un chemin en entrée
+            Constructeur de l'objet Action
+            :param regle: attends un objet Regle en entrée
+            :param nom_rep: attends un chemin en entrée
         """
-        self._nom_du_rep = nom_du_rep
-        self._regle = regle
+        self.nom_rep = nom_rep
+        self.regle = regle
 
-    #Décorateur getters/setters
-    @property
-    def nom_du_rep(self):
-        """
-        getter of nom_du_rep
-        :return:
-        """
-        return self._nom_du_rep
+    def get_nom_rep(self):
+        return self.nom_rep
 
-    @nom_du_rep.setter
-    def nom_du_rep(self, value):
-        """
-        setter of nom_du_rep
-        :param value:
-        :return:
-        """
-        self.nom_du_rep = value
+    def set_nom_rep(self, valeur):
+        self.nom_rep = valeur
 
-    @property
-    def regle(self):
-        """
-        getter of regle
-        :return:
-        """
-        return self._regle
+    def get_regle(self):
+        return self.regle
 
-    @regle.setter
-    def regle(self, value):
-        """
-        setter of regle
-        :param value:
-        :return:
-        """
-        self._regle = value
+    def set_regle(self, valeur):
+        self.regle = valeur
 
     def __str__(self):
-        """
-        retorune une chaine de charactère composée des variables de l'objet
-        :return:
-        """
-        return "{} {}".format(self.nom_du_rep, self.regle)
+        return self.nom_du_rep + self.regle
 
-    def simulate(self):
-        try:
-            print(self.nom_du_rep)
-        except FileNotFoundError:
-            print("Nom de répertoire invalide, réessayez")
-
-
+    def simulation(self):
         nom_original = []
-        nom_modifier = []                           #On initialise 2 listes vides servant à stocker
-        regle = self.regle                          #on place self.regle dans regle
-        chf = str(regle.apartirde)                  #récupère l'ammorce initiale
-        if regle.extension == "":
-            for element in os.listdir(self.nom_du_rep):     #on parcours le directory au chemin "nom_du_rep"
-                nom_original.append(element)                #On stock le noms des fichier dans la liste nom_original
-
-                nom_complet = element.split(".")            #On récupère le nom complet du fichier qu'on split au point
-                extension = nom_complet[1]                  #on stock le nom de l'extension dans la variable extension
-                if regle.nom_fichier != "":
-                    nom = regle.nom_fichier
+        nom_modifie = []                           #Listes permettant à stocker les noms
+        amm = str(self.regle.apartirde)                  #ammorce initiale
+        if self.regle.extension == "":
+            for fichier in os.listdir(self.nom_rep):     #Parcours du dossier
+                nom_original.append(fichier)                #Stockage des noms de fichier dans la liste nom_original
+                nom_complet = fichier.split(".")            #nom du fichier splité
+                extension = nom_complet[1]                  #nom de l'extension dans la variable extension
+                if self.regle.nom_fichier != "":
+                    nom = self.regle.nom_fichier
                 else:                               #permet de remplacer ou nom par nom_fichier en fonctions des options
                     nom = nom_complet[0]
-                if regle.amorce == "Aucune":            #Instructions si il n'y a pas d'ammorce
-                    nom_modifier.append(regle.prefixe+nom+regle.postfixe+"."+extension)     #population de la liste "nom_modifier"
+                if self.regle.amorce == "Aucune":            #Instructions si il n'y a pas d'ammorce
+                    nom_modifie.append(self.regle.prefixe+nom+self.regle.postfixe+"."+extension)     #population de la liste "nom_modifier"
 
 
                 else:
-                    if regle.amorce == "Chiffres":
-                        regle.apartirde = int(regle.apartirde)
-                        nom_modifier.append(str(regle.apartirde) + regle.prefixe + nom+regle.postfixe + "." + extension)
-                        regle.apartirde += 1            #instructions si il y'a une ammorce (CHiffre ou lettre)
-                    elif regle.amorce == "Lettres":
-                        nom_modifier.append(chf + regle.prefixe + nom + regle.postfixe + "." + extension)
-                        chf = inc_char(chf)             #fais appel à la fonction "inc_char" qui permet d'incrementer lettres
+                    if self.regle.amorce == "Chiffres":
+                        self.regle.apartirde = int(self.regle.apartirde)
+                        nom_modifie.append(str(self.regle.apartirde) + self.regle.prefixe + nom+self.regle.postfixe + "." + extension)
+                        self.regle.apartirde += 1            #instructions si il y'a une ammorce (CHiffre ou lettre)
+                    elif self.regle.amorce == "Lettres":
+                        nom_modifie.append(amm + self.regle.prefixe + nom + self.regle.postfixe + "." + extension)
+                        amm = incrementation_char(amm)             #appel à la fonction "incrementation_char" qui permet d'incrementer lettres
         else:
-            print("Application du filtre d'extension ...")          #Previens l'utilisateur qu'un filtre d'extension est activé
-            for element in os.listdir(self.nom_du_rep):
+            for fichier in os.listdir(self.nom_rep):
                 bool = False
                 bool2 = False
-                nom_original.append(element)
-                nom_complet = element.split(".")
+                nom_original.append(fichier)
+                nom_complet = fichier.split(".")
                 extension = nom_complet[1]
-                if regle.nom_fichier != "":
-                    nom = regle.nom_fichier
-                else:                               #permet de remplacer ou nom par nom_fichier en fonctions des options
+                if self.regle.nom_fichier != "":
+                    nom = self.regle.nom_fichier
+                else:                               #Remplace ou non par nom_fichier en fonctions des options
                     nom = nom_complet[0]
-                for i in regle.extension.split(","):
-                    if ("."+extension) == i:    #ici on verifie que l'extension match avec le filtre avant de renommer
+                for i in self.regle.extension.split(","):
+                    if ("."+extension) == i:
                         bool2 = True            #Previens que l'extension à bien matché avec AU MOINS une des extensions spécifiées
-                        if regle.amorce == "Aucune":
-                            nom_modifier.append(regle.prefixe+nom+regle.postfixe+"."+extension)
+                        if self.regle.amorce == "Aucune":
+                            nom_modifie.append(self.regle.prefixe+nom+self.regle.postfixe+"."+extension)
                         else:
-                            if regle.amorce == "Chiffres":
-                                regle.apartirde = int(regle.apartirde)
-                                nom_modifier.append(str(regle.apartirde) + regle.prefixe + nom + regle.postfixe + "."+ extension)
-                                regle.apartirde += 1
-                            elif regle.amorce == "Lettres":
-                                nom_modifier.append(chf + regle.prefixe + nom + regle.postfixe + "." + extension)
-                                chf = inc_char(chf)
+                            if self.regle.amorce == "Chiffres":
+                                self.regle.apartirde = int(self.regle.apartirde)
+                                nom_modifie.append(str(self.regle.apartirde) + self.regle.prefixe + nom + self.regle.postfixe + "."+ extension)
+                                self.regle.apartirde += 1
+                            elif self.regle.amorce == "Lettres":
+                                nom_modifie.append(amm + self.regle.prefixe + nom + self.regle.postfixe + "." + extension)
+                                amm = incrementation_char(amm)
                     else:
-                        bool = True             #Previens que le fichier est non éligible à la modification
-                if bool == True and bool2 == False:             #Si le fichier est non eligible à la modification &
-                    nom_original.remove(element)                #qu'il ne l'a pas été pour aucune de la liste alors on supprime
-        print("Avant le renommage : " + str(nom_original))      #l'élément de la liste des noms originaux pour ne garder
-        print("Après le renommage : " + str(nom_modifier))      # que ceux qui seront modifiés
-        return nom_modifier, nom_original      #Retourne un tuple composé d'une liste des noms avant modif et une après
+                        bool = True
+                if bool == True and bool2 == False:             #Vérification droit de création sinon suppresion
+                    nom_original.remove(fichier)
+        return nom_original, nom_modifie
 
 
-def inc_char(text, chlist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+def incrementation_char(text, chlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
     """
     Permet l'incrémentation d'une variable de type string
     :param text: La lettre à incrémenter
@@ -136,7 +97,6 @@ def inc_char(text, chlist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
     if not chlen:
         return ''
     text = str(text)
-    #Remplace tous les charactères sauf chlist
     text = re.sub('[^' + chlist + ']', '', text)
     if not len(text):
         return chlist[0]
@@ -157,28 +117,3 @@ def inc_char(text, chlist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
         inc += chlist[0]
     result = text[0:-len(inc)] + inc
     return result
-
-
-# O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",None)
-# O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",".txt,.pdf")
-#B = Regle("Regle_numero_2","Chiffre","1","bete","DEBEBOM","izi",".txt,.pdf")
-# A = Action(O)
-#D = Action(B)
-# A.simulate()
-
-#D.simulate()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
