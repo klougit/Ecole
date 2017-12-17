@@ -25,7 +25,7 @@ class Renommage(Action):        #Classe renommage hérite d'Action
         modif = t[0]
         orig = t[1]             #Affectation de chaque valeur du tuple à une variable
         # check = input("Voulez vous proceder a ces renommages ? (Entree pour OUI, n'importe quelle touche pour NON): ")
-        result = messagebox.askokcancel("Etes-vous sûr?", "Après renommage:\n", icon='warning')
+        result = messagebox.askokcancel("Etes-vous sûr?", "Après renommage:\n"+self.retourne_liste(modif), icon='warning')
         if result is True:
             for element in os.listdir(self.nom_du_rep):     #on parcours le repertoire "nom_du_rep"
                 for i in range(0, len(orig)):               #pour chaqe fichier on parcours la liste "orig"
@@ -40,6 +40,3 @@ class Renommage(Action):        #Classe renommage hérite d'Action
 # O = Regle("Regle numero 1","Lettre","A","bon","Coucou","az",None)
 # toto = Renommage(O)
 # toto.renommer()
-
-
-
