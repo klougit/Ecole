@@ -1,23 +1,26 @@
 from action import *
 from regle import *
 from os import *
+from tkinter import *
+from tkinter import messagebox
 
 class Renommage(Action):        #Classe renommage hérite d'Action
-    def __init__(self, regle):
-        Action.__init__(self, regle)    #On récupère les attributs de la classe mere
+    def __init__(self, regle, nom_rep):
+        Action.__init__(self, regle, nom_rep)    #On récupère les attributs de la classe mere
 
-    def rennommer(self):
+    def renommer(self, objet):
         """
         Effectue l'action de renommage selon les regles. Utilise le resultat de objet.simulate()
         :return:
         """
 
-        t = toto.simulate()        #T recupère un tuple contenant la liste des fichier originelle et celle obtenue après modification
-        print(t)
+        t = objet.simulate()        #T recupère un tuple contenant la liste des fichier originelle et celle obtenue après modification
+        # print(t)
         modif = t[0]
         orig = t[1]             #Affectation de chaque valeur du tuple à une variable
-        check = input("Voulez vous proceder a ces renommages ? (Entree pour OUI, n'importe quelle touche pour NON): ")
-        if check is "":
+        # check = input("Voulez vous proceder a ces renommages ? (Entree pour OUI, n'importe quelle touche pour NON): ")
+        result = messagebox.askokcancel("Renommage", "Etes-vous sûr?", icon='warning')
+        if result is True:
             for element in os.listdir(self.nom_du_rep):     #on parcours le repertoire "nom_du_rep"
                 for i in range(0, len(orig)):               #pour chaqe fichier on parcours la liste "orig"
                     if element == orig[i]:                  #comparaison d'un fichier avec son emplacement dans la liste orig
@@ -28,9 +31,9 @@ class Renommage(Action):        #Classe renommage hérite d'Action
         else:
             print("Operation annulée")
 
-O = Regle("Regle numero 1","Lettre","A","bon","Coucou","az",None)
-toto = Renommage(O)
-toto.rennommer()
+# O = Regle("Regle numero 1","Lettre","A","bon","Coucou","az",None)
+# toto = Renommage(O)
+# toto.renommer()
 
 
 

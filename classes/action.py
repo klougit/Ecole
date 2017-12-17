@@ -5,7 +5,8 @@ import os
 class Action:
 
     # def __init__(self, regle, nom_du_rep = "C:/Users/Klou/Dropbox/École/Cours/Python/PyCharm Project/trainingExam/todo"):
-    def __init__(self, regle, nom_du_rep = "./todo"):
+    # def __init__(self, regle, nom_du_rep = "./todo"):
+    def __init__(self, regle, nom_du_rep):
         """
         Constructeur d'un objet Action
         :param regle: attends un objet Regle en entrée
@@ -54,27 +55,34 @@ class Action:
         retorune une chaine de charactère composée des variables de l'objet
         :return:
         """
-        # return "{} {}".format(self.nom_du_rep, self.regle)
+        return "{} {}".format(self.nom_du_rep, self.regle)
 
     def simulate(self):
+        try:
+            print(self.nom_du_rep)
+        except FileNotFoundError:
+            print("Nom de répertoire invalide, réessayez")
+
+
         nom_original = []
         nom_modifier = []                           #On initialise 2 listes vides servant à stocker
         regle = self.regle                          #on place self.regle dans regle
         chf = str(regle.apartirde)                  #récupère l'ammorce initiale
-        if regle.extension is None:
+        if regle.extension == "":
+            print(regle.prefixe)
             for element in os.listdir(self.nom_du_rep):     #on parcours le directory au chemin "nom_du_rep"
-
                 nom_original.append(element)                #On stock le noms des fichier dans la liste nom_original
 
                 nom_complet = element.split(".")            #On récupère le nom complet du fichier qu'on split au point
                 extension = nom_complet[1]                  #on stock le nom de l'extension dans la variable extension
-                print(extension)
-                if regle.nom_fichier is not None:
+                if regle.nom_fichier != "":
                     nom = regle.nom_fichier
                 else:                               #permet de remplacer ou nom par nom_fichier en fonctions des options
                     nom = nom_complet[0]
-                if regle.amorce is None:            #Instructions si il n'y a pas d'ammorce
+                if regle.amorce == "Aucune":            #Instructions si il n'y a pas d'ammorce
                     nom_modifier.append(regle.prefixe+nom+regle.postfixe+"."+extension)     #population de la liste "nom_modifier"
+
+
                 else:
                     if regle.amorce is "Chiffre":
                         nom_modifier.append(str(regle.apartirde) + regle.prefixe + nom+regle.postfixe + "." + extension)
@@ -90,15 +98,15 @@ class Action:
                 nom_original.append(element)
                 nom_complet = element.split(".")
                 extension = nom_complet[1]
-                if regle.nom_fichier is not None:
+                if regle.nom_fichier != "":
                     nom = regle.nom_fichier
                 else:                               #permet de remplacer ou nom par nom_fichier en fonctions des options
                     nom = nom_complet[0]
                 for i in regle.extension.split(","):
+                    print(regle.prefixe)
                     if ("."+extension) == i:    #ici on verifie que l'extension match avec le filtre avant de renommer
-
                         bool2 = True            #Previens que l'extension à bien matché avec AU MOINS une des extensions spécifiées
-                        if regle.amorce is None:
+                        if regle.amorce == "Aucune":
                             nom_modifier.append(regle.prefixe+nom+regle.postfixe+"."+extension)
                         else:
                             if regle.amorce is "Chiffre":
@@ -108,8 +116,8 @@ class Action:
                                 nom_modifier.append(chf + regle.prefixe + nom + regle.postfixe + "." + extension)
                                 chf = inc_char(chf)
                     else:
-                        bool = True             #Previens que le fichier est nom éligible à la modification
-                if bool == True and bool2 == False:             #Si le fichier est nom eligible à la modification &
+                        bool = True             #Previens que le fichier est non éligible à la modification
+                if bool == True and bool2 == False:             #Si le fichier est non eligible à la modification &
                     nom_original.remove(element)                #qu'il ne l'a pas été pour aucune de la liste alors on supprime
         print("Avant le renommage : " + str(nom_original))      #l'élément de la liste des noms originaux pour ne garder
         print("Après le renommage : " + str(nom_modifier))      # que ceux qui seront modifiés
@@ -152,11 +160,11 @@ def inc_char(text, chlist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
 
 
 # O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",None)
-O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",".txt,.pdf")
+# O = Regle("Regle_numero_1","Lettre","A","bon",None,"az",".txt,.pdf")
 #B = Regle("Regle_numero_2","Chiffre","1","bete","DEBEBOM","izi",".txt,.pdf")
-A = Action(O)
+# A = Action(O)
 #D = Action(B)
-A.simulate()
+# A.simulate()
 
 #D.simulate()
 

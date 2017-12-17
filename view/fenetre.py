@@ -3,6 +3,7 @@ sys.path.append('.\\classes')
 from regle import *
 from listeregle import *
 from renommage import *
+from action import *
 
 
 from tkinter import *
@@ -12,15 +13,12 @@ from tkinter.ttk import Combobox
 
 
 class MyWindow(Tk):
-    def __init__(self, title):
+    def __init__(self):
         super(MyWindow, self).__init__()
-        self.resizable(width=False, height=False)
-        # self.title(title)
-        # self.create()
-        # self.window_liste()
-        self.main_window()
-        self.menu()
         self.geom_fen(1050, 450)
+        self.resizable(width=False, height=False)
+        self.menu()
+        self.main_window()
         self.mainloop()
 
     def geom_fen(self, larg, haut):
@@ -193,19 +191,30 @@ class MyWindow(Tk):
     def help(): #help
         messagebox.showinfo("À propos", "Créé par Quentin Nicolas\nVersion 1.0")
 
-
-
-
-
+# todo faire regex - tests - gestion nom_rep - gestion extension (popup exemple) - nom rep invalide - charger une regle
 
 
     def renommer_fichers(self):
-        pass
+        # todo recuperer info pour creer regle + lancer t = Renommage(regle) + t.renommer()
+        nomrep = self.nomrep.get()
+        amorce = self.amorce_select.get()
+        a_partir_de = self.apartirde.get()
+        prefixe = self.prefix.get()
+        nom_fichier = self.nom_fich.get()
+        postfixe = self.postfix.get()
+        extension = self.ext.get()
+        ma_regle = Regle(" ", amorce, a_partir_de, prefixe, nom_fichier, postfixe, extension)
+        # toto = Action(ma_regle, nomrep)
+        # toto.simulate()
+        toto = Renommage(ma_regle, "./todo")
+        toto.renommer(toto)
+
 
 
     def main_window(self):
-        ### Label ###
-        # title_lab = Label(self, text="Renommer en lot").grid(row=0, column=2)
+        self.title("Renommage de fichier")
+        # Label
+        title_lab = Label(self, text="Renommer en lot").grid(row=0, column=2)
         Label(self, text="Nom de répertoire").grid(row=1, column=1)
         Label(self, text="Amorce").grid(row=3, column=0, pady=10)
         Label(self, text="Prefixe").grid(row=3, column=1)
@@ -214,13 +223,13 @@ class MyWindow(Tk):
         Label(self, text="Extension concernée").grid(row=3, column=4)
         Label(self, text="A partir de : ").grid(row=5, column=0, pady=10)
 
-        ### Picture ####
+        # Picture
         picture = PhotoImage(file="./data/Rename.gif")
         label1 = Label(self, image=picture)
         label1.image = picture
         label1.grid(row=1, column=5)
 
-        ### Entry ###
+        # Entry
         self.nomrep = StringVar()
         Entry(self, textvariable=self.nomrep).grid(row=1, column=2)
 
@@ -247,7 +256,7 @@ class MyWindow(Tk):
         self.amorce_select.set(amorce_choice[0])
 
         ### Button ###
-        Button(self, text="Renommer").grid(row=6, column=4)
+        Button(self, text="Renommer", command=self.renommer_fichers).grid(row=6, column=4)
 
 
 
@@ -316,7 +325,7 @@ class MyWindow(Tk):
 
 
 
-fen = MyWindow("Renommage fichier")
+fen = MyWindow()
 
 # if __name__ == '__main__':
 #     app = MyWindow("Renommage fichier")
