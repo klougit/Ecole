@@ -8,6 +8,12 @@ class Renommage(Action):        #Classe renommage hérite d'Action
     def __init__(self, regle, nom_rep):
         Action.__init__(self, regle, nom_rep)    #On récupère les attributs de la classe mere
 
+    def retourne_liste(self, liste):
+        liste_propre = ""
+        for element in liste:
+            liste_propre = liste_propre + element + "\n"
+        return liste_propre
+
     def renommer(self, objet):
         """
         Effectue l'action de renommage selon les regles. Utilise le resultat de objet.simulate()
@@ -15,11 +21,10 @@ class Renommage(Action):        #Classe renommage hérite d'Action
         """
 
         t = objet.simulate()        #T recupère un tuple contenant la liste des fichier originelle et celle obtenue après modification
-        # print(t)
         modif = t[0]
         orig = t[1]             #Affectation de chaque valeur du tuple à une variable
         # check = input("Voulez vous proceder a ces renommages ? (Entree pour OUI, n'importe quelle touche pour NON): ")
-        result = messagebox.askokcancel("Renommage", "Etes-vous sûr?", icon='warning')
+        result = messagebox.askokcancel("Etes-vous sûr?", "Après renommage:\n"+self.retourne_liste(modif), icon='warning')
         if result is True:
             for element in os.listdir(self.nom_du_rep):     #on parcours le repertoire "nom_du_rep"
                 for i in range(0, len(orig)):               #pour chaqe fichier on parcours la liste "orig"

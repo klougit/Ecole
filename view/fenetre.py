@@ -206,7 +206,7 @@ class MyWindow(Tk):
         ma_regle = Regle(" ", amorce, a_partir_de, prefixe, nom_fichier, postfixe, extension)
         # toto = Action(ma_regle, nomrep)
         # toto.simulate()
-        toto = Renommage(ma_regle, "./todo")
+        toto = Renommage(ma_regle, nomrep)
         toto.renommer(toto)
 
 

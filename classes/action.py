@@ -69,7 +69,6 @@ class Action:
         regle = self.regle                          #on place self.regle dans regle
         chf = str(regle.apartirde)                  #récupère l'ammorce initiale
         if regle.extension == "":
-            print(regle.prefixe)
             for element in os.listdir(self.nom_du_rep):     #on parcours le directory au chemin "nom_du_rep"
                 nom_original.append(element)                #On stock le noms des fichier dans la liste nom_original
 
@@ -84,10 +83,11 @@ class Action:
 
 
                 else:
-                    if regle.amorce is "Chiffre":
+                    if regle.amorce == "Chiffres":
+                        regle.apartirde = int(regle.apartirde)
                         nom_modifier.append(str(regle.apartirde) + regle.prefixe + nom+regle.postfixe + "." + extension)
                         regle.apartirde += 1            #instructions si il y'a une ammorce (CHiffre ou lettre)
-                    elif regle.amorce is "Lettre":
+                    elif regle.amorce == "Lettres":
                         nom_modifier.append(chf + regle.prefixe + nom + regle.postfixe + "." + extension)
                         chf = inc_char(chf)             #fais appel à la fonction "inc_char" qui permet d'incrementer lettres
         else:
@@ -103,16 +103,16 @@ class Action:
                 else:                               #permet de remplacer ou nom par nom_fichier en fonctions des options
                     nom = nom_complet[0]
                 for i in regle.extension.split(","):
-                    print(regle.prefixe)
                     if ("."+extension) == i:    #ici on verifie que l'extension match avec le filtre avant de renommer
                         bool2 = True            #Previens que l'extension à bien matché avec AU MOINS une des extensions spécifiées
                         if regle.amorce == "Aucune":
                             nom_modifier.append(regle.prefixe+nom+regle.postfixe+"."+extension)
                         else:
-                            if regle.amorce is "Chiffre":
+                            if regle.amorce == "Chiffres":
+                                regle.apartirde = int(regle.apartirde)
                                 nom_modifier.append(str(regle.apartirde) + regle.prefixe + nom + regle.postfixe + "."+ extension)
                                 regle.apartirde += 1
-                            elif regle.amorce is "Lettre":
+                            elif regle.amorce == "Lettres":
                                 nom_modifier.append(chf + regle.prefixe + nom + regle.postfixe + "." + extension)
                                 chf = inc_char(chf)
                     else:
