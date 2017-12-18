@@ -186,14 +186,11 @@ class MaFenetre(Tk):
         liste_regle = ListeRegle()
         liste_regle.charger()
         regles = liste_regle.get_regle()
-        noms_regles = []
-        for i in regles:
-            noms_regles.append(str(i).split(" ")[0])
         ### Combobox ###
         self.amorce_select = StringVar()
         Combobox(win_liste, textvariable=self.amorce_select,
-                 values=noms_regles, state='readonly').grid(row=0, column=0)
-        self.amorce_select.set(noms_regles[0])
+                 values=regles, state='readonly').grid(row=0, column=0)
+        self.amorce_select.set(regles[0])
         ### Button ###
         Button(win_liste, text="valider", command=self.previsu_selection).grid(row=1, column=0)
 
@@ -342,11 +339,3 @@ class MaFenetre(Tk):
             Popup a propos :
         """
         messagebox.showinfo("À propos", "Créé par Quentin Nicolas\nVersion 1.0")
-
-
-fen = MaFenetre()
-
-# if __name__ == '__main__':
-#     app = MyWindow("Renommage fichier")
-#     app.mainloop()
-#     app.quit()
