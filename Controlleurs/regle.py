@@ -135,14 +135,20 @@ class Regle:
         Retourne une chaine de charactère contenant tous les attributs de l'objet
         :return:
         """
-        if self.nom_fichier is None:
-            self.nom_fichier = "Aucune"
-        if self.amorce is None:
-            self.nom_fichier = "Aucune"
-        if self.extension is None:
-            self.extension = "Aucune"
+        # if self.nom_fichier is None:
+        #     self.nom_fichier = "Aucune"
+        # if self.amorce is None:
+        #     self.nom_fichier = "Aucune"
+        # if self.extension is None:
+        #     self.extension = "Aucune"
+        def extension_propre():
+            toto = ""
+            for i in self.extension:
+                toto = toto + i
+            return toto
+
+
 
         return self.nom_regle + " " + self.amorce + " " + self.apartirde + " " \
             + self.prefixe + " " + self.nom_fichier + " " + self.postfixe \
-             + " " + str(self.extension)
-
+             + " " + extension_propre()
