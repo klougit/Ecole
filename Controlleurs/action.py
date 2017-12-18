@@ -7,7 +7,7 @@ class Action:
 
     def __init__(self, regle, nom_rep):
         """
-            Constructeur de l'objet Action
+                Constructeur de l'objet Action
             :param regle: attends un objet Regle en entrée
             :param nom_rep: attends un chemin en entrée
         """
